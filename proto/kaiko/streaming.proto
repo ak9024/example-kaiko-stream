@@ -1,0 +1,44 @@
+
+syntax = "proto3";
+
+package kaiko.streaming;
+
+service MarketData {
+    rpc Subscribe (SubscribeRequest) returns (stream MarketDataResponse);
+}
+
+message SubscribeRequest {
+    InstrumentCriteria instrument_criteria = 1;
+    repeated Commodity commodities = 2;
+}
+
+message InstrumentCriteria {
+    string exchange = 1;
+    string instrument_class = 2;
+    string code = 3;
+}
+
+enum Commodity {
+    SMUC_TRADE = 0;
+}
+
+message MarketDataResponse {
+    string exchange = 1;
+    string instrument_class = 2;
+    string code = 3;
+    string sequence_id = 4;
+    string id = 5;
+    double price = 6;
+    double amount = 7;
+    string ts_exchange = 8;
+    string ts_collection = 9;
+    string ts_event = 10;
+    Side side = 11;
+}
+
+enum Side {
+    UNKNOWN = 0;
+    BUY = 1;
+    SELL = 2;
+}
+
