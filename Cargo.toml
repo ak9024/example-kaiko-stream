@@ -4,11 +4,15 @@ version = "0.1.0"
 edition = "2021"
 
 [dependencies]
+kaikosdk = { git = "https://github.com/kaikodata/kaiko-rust-sdk.git", tag = "1.24.0" }
+tonic = { version = "0.12.3", default-features = false, features = [
+    "tls-roots",
+    "tls",
+] }
+tokio = { version = "1.40.0", default-features = false, features = [
+    "macros",
+    "rt-multi-thread",
+] }
+tokio-stream = { version = "0.1.16", default-features = false }
+pbjson-types = { version = "0.7.0", default-features = false }
 dotenv = "0.15.0"
-prost = "0.13.3"
-prost-types = "0.13.3"
-tokio = { version = "1.41.1", features = ["full"] }
-tonic = { version = "0.12.3", features = ["tls", "tls-native-roots"] }
-
-[build-dependencies]
-tonic-build = "0.12.3"
