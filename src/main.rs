@@ -4,11 +4,11 @@ use tonic::transport::ClientTlsConfig;
 use tonic::{transport::Channel, Request};
 
 pub mod kaiko {
-    tonic::include_proto!("kaiko.streaming");
+    tonic::include_proto!("kaiko.benchmark_reference_rates");
 }
 
-use kaiko::market_data_client::MarketDataClient;
-use kaiko::{Commodity, InstrumentCriteria, SubscribeRequest};
+use kaiko::benchmark_reference_rates_client::BenchmarkReferenceRatesClient;
+use kaiko::SubscribeRequest;
 
 #[tokio::main]
 async fn main() -> Result<(), Box<dyn std::error::Error>> {
@@ -24,20 +24,16 @@ async fn main() -> Result<(), Box<dyn std::error::Error>> {
 
     println!("Connected to kaiko gRPC stream");
 
-    let mut client = MarketDataClient::with_interceptor(channel, move |mut req: Request<()>| {
-        req.metadata_mut()
-            .insert("x-api-key", api_key.parse().unwrap());
-        Ok(req)
-    });
+    let mut client =
+        BenchmarkReferenceRatesClient::with_interceptor(channel, move |mut req: Request<()>| {
+            req.metadata_mut()
+                .insert("x-api-key", api_key.parse().unwrap());
+            Ok(req)
+        });
 
-    // https://docs.kaiko.com/kaiko-stream/market-data/trades/tick-level-trades
+    // https://docs.kaiko.com/kaiko-stream/rates-and-indices/digital-asset-rates/benchmark-reference-rates
     let request = tonic::Request::new(SubscribeRequest {
-        instrument_criteria: Some(InstrumentCriteria {
-            exchange: "cbse".into(),
-            instrument_class: "spot".into(),
-            code: "btc-usd".into(),
-        }),
-        commodities: vec![Commodity::SmucTrade.into()],
+        index_codes: vec!["KK_BRR_BTCUSD".into()],
     });
 
     let mut stream = client.subscribe(request).await?.into_inner();
