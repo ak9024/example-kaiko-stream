@@ -16,7 +16,7 @@ async fn main() -> Result<(), Box<dyn std::error::Error>> {
 
     let api_key = env::var("KAIKO_API_KEY").expect("KAIKO_API_KEY not set");
 
-    let tls_config = ClientTlsConfig::new();
+    let tls_config = ClientTlsConfig::new().with_native_roots();
     let channel = Channel::from_static("https://gateway-v0-grpc.kaiko.ovh")
         .tls_config(tls_config)?
         .connect()
