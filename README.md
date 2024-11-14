@@ -11,6 +11,8 @@ cargo run
 
 ### Sequence Diagram 
 
+![sq](./sc.png)
+
 ```
 title Kaiko Tick-Level Trades Integration
 
