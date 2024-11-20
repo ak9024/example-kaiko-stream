@@ -16,3 +16,5 @@ tokio = { version = "1.40.0", default-features = false, features = [
 tokio-stream = { version = "0.1.16", default-features = false }
 pbjson-types = { version = "0.7.0", default-features = false }
 dotenv = "0.15.0"
+prost-types = "0.13.3"
+chrono = "0.4"
